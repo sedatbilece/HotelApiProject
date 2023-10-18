@@ -24,9 +24,12 @@ namespace HotelProject.API.Controllers
             return Ok(values);
         }
         [HttpGet("{id}")]
-        public IActionResult GetStaff()
+        public IActionResult GetStaff(int id)
         {
-            return Ok();
+            var value = _staffService.TGetById(id);
+            if (value == null)
+                return NotFound();
+            return Ok(value);
         }
 
         [HttpPost]
@@ -37,14 +40,17 @@ namespace HotelProject.API.Controllers
         }
 
         [HttpDelete]
-        public IActionResult DeleteStaff()
+        public IActionResult DeleteStaff(int id)
         {
+            var value = _staffService.TGetById(id);
+            _staffService.TDelete(value);
             return Ok();
         }
 
         [HttpPut]
-        public IActionResult UpdateStaff()
+        public IActionResult UpdateStaff(Staff staff)
         {
+            _staffService.TUpdate(staff);
             return Ok();
         }
     }

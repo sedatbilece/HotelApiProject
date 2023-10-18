@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using HotelProject.BusinessLayer.Abstract;
+using HotelProject.EntityLayer.Concrete;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelProject.API.Controllers
@@ -7,10 +9,19 @@ namespace HotelProject.API.Controllers
     [ApiController]
     public class StaffController : ControllerBase
     {
+
+        private readonly IStaffService _staffService;
+
+        public StaffController(IStaffService staffService)
+        {
+            _staffService = staffService;
+        }
+
         [HttpGet]
         public IActionResult StaffList()
         {
-            return Ok();
+            var values = _staffService.TGetAll();
+            return Ok(values);
         }
         [HttpGet("{id}")]
         public IActionResult GetStaff()
@@ -19,8 +30,9 @@ namespace HotelProject.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddStaff()
+        public IActionResult AddStaff(Staff staff)
         {
+            _staffService.TInsert(staff);
             return Ok();
         }
 

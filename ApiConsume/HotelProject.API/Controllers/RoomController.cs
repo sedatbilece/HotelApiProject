@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using HotelProject.BusinessLayer.Abstract;
+using HotelProject.EntityLayer.Concrete;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelProject.API.Controllers
@@ -7,32 +9,47 @@ namespace HotelProject.API.Controllers
     [ApiController]
     public class RoomController : ControllerBase
     {
+        private readonly IRoomService _roomService;
+
+        public RoomController(IRoomService roomService)
+        {
+            _roomService = roomService;
+        }
+
         [HttpGet]
         public IActionResult RoomList()
         {
-            return Ok();
+            var values = _roomService.TGetAll();
+            return Ok(values);
         }
         [HttpGet("{id}")]
-        public IActionResult GetRoom()
+        public IActionResult GetRoom(int id)
         {
-            return Ok();
+            var value = _roomService.TGetById(id);
+            if (value == null)
+                return NotFound();
+            return Ok(value);
         }
 
         [HttpPost]
-        public IActionResult AddRoom()
+        public IActionResult AddRoom(Room Room)
         {
+            _roomService.TInsert(Room);
             return Ok();
         }
 
         [HttpDelete]
-        public IActionResult DeleteRoom()
+        public IActionResult DeleteRoom(int id)
         {
+            var value = _roomService.TGetById(id);
+            _roomService.TDelete(value);
             return Ok();
         }
 
         [HttpPut]
-        public IActionResult UpdateRoom()
+        public IActionResult UpdateRoom(Room Room)
         {
+            _roomService.TUpdate(Room);
             return Ok();
         }
     }

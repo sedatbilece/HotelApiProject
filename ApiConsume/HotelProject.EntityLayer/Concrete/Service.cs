@@ -13,6 +13,8 @@ namespace HotelProject.EntityLayer.Concrete
         public string Title { get; set; }
         public string Description { get; set; }
 
-        //test1
+        //test2
+
+        //test2
     }
 }
